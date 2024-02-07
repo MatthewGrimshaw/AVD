@@ -1,0 +1,39 @@
+---
+name: Lint and Test Code Base
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Lint Code Base
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Lint Code Base
+        uses: docker://ghcr.io/github/super-linter:v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ARM: false  # Need to fix 'Could not find item' error in linter to enable
+          VALIDATE_JSCPD: false  # Need to fix duplication in workflows to enable
+
+  test:
+    name: Test Code Base
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run Pester tests
+        run: |
+          Invoke-Pester
+        shell: pwsh
