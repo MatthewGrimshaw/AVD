@@ -29,7 +29,14 @@ param(
     $githubPat
 )
 
-
+################ delete before pushing to repo
+$AzDoOrganizationName = 'MattGrimshaw1'
+$AzDoOProjectName = 'AVD'
+$tenantId = '4f8875af-ac0b-46ee-8a73-3634138f5818'
+$subscriptionId = '6a509a0a-f0b6-4e8c-88d3-7108d0f37309'
+$subscriptionName = (Get-AzContext).Subscription.Name 
+$appName = "AzDevOpsApp"
+################
 
 # log in to Azure
 Connect-AzAccount -Tenant $tenantId
